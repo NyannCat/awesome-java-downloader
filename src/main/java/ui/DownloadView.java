@@ -4,7 +4,6 @@
 
 package ui;
 
-import http.DownloadStatus;
 import http.HttpDownloadTask;
 
 import java.awt.*;
@@ -69,15 +68,21 @@ public class DownloadView extends JFrame {
             new Thread(() -> {
                 while (instance.getProgressPercentage() < 100) {
                     try {
-                        TimeUnit.MILLISECONDS.sleep(300);
+                        TimeUnit.MILLISECONDS.sleep(400);
                         int percentage = instance.getProgressPercentage();
-                        Map<String, String> statusMap = instance.getStatusMap(0.3f);
+                        Map<String, String> statusMap = instance.getStatusMap(0.4f);
                         progressBar1.setValue(percentage);
                         progressBar1.setString(String.format("[%d%%] %s/%s", percentage, statusMap.get("currentSize"), statusMap.get("totalSize")));
-                        textField4.setText(statusMap.get("speed") + "/s" + " ,[" + instance.getStatus().description + "]" + ", ETA:" + statusMap.get("time"));
+                        textField4.setText(String.format("%s/s,[%s], ETA:%s", statusMap.get("speed"),instance.getStatus().description, statusMap.get("time")));
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();
                     }
+                }
+                try {
+                    //等待确认状态
+                    TimeUnit.MILLISECONDS.sleep(500);
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
                 }
                 JOptionPane.showMessageDialog(dialogPane,instance.getStatus().description, "提示", JOptionPane.INFORMATION_MESSAGE);
                 button3.setEnabled(false);

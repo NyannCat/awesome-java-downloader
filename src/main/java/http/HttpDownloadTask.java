@@ -28,10 +28,11 @@ public class HttpDownloadTask {
     private final AtomicLong progress;
     private final Map<String, String> statusMap;
 
+    private volatile DownloadStatus status;
+
     private String tempFilename;
     private URL url;
     private DownloadThread[] threads;
-    private DownloadStatus status;
     private RecordObject record;
     private long fileLength;
     private long previousLength;
@@ -51,6 +52,7 @@ public class HttpDownloadTask {
 
     /**
      * 获取下载进度百分比
+     *
      * @return 进度百分比
      */
     public int getProgressPercentage() {
@@ -102,6 +104,7 @@ public class HttpDownloadTask {
     /**
      * 初始化下载连接
      * 判断是否支持多线程， 并开启下载任务
+     *
      * @throws RuntimeException 程序异常（包括描述）
      */
     public void resolve() throws RuntimeException {
@@ -139,7 +142,8 @@ public class HttpDownloadTask {
                 throw new RuntimeException("文件已存在");
             }
             //判断是否支持多线程下载
-            boolean acceptRanges = conn.getHeaderField("accept-ranges") != null;
+            String headerField = conn.getHeaderField("accept-ranges");
+            boolean acceptRanges = (headerField != null && !headerField.equals("none"));
             System.out.printf("开始下载任务:%s, 文件大小: %s\n", filename, StorageUnit.convertTo(fileLength));
             System.out.printf("是否支持多线程下载:%s\n", acceptRanges);
             status = DownloadStatus.DOWNLOADING;
@@ -161,7 +165,9 @@ public class HttpDownloadTask {
             } else {
                 directDownload(file);
             }
-            status = DownloadStatus.FINISHED;
+            if (status != DownloadStatus.STOPPED) {
+                status = DownloadStatus.FINISHED;
+            }
 
         } catch (MalformedURLException e) {
             throw new RuntimeException("URL 解析失败");
