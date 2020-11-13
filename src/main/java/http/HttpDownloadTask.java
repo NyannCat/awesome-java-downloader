@@ -45,6 +45,14 @@ public class HttpDownloadTask {
         this.statusMap = new HashMap<>();
     }
 
+    public DownloadStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * 获取下载进度百分比
+     * @return 进度百分比
+     */
     public int getProgressPercentage() {
         if (fileLength == 0L) {
             return 0;
@@ -52,6 +60,12 @@ public class HttpDownloadTask {
         return (int) ((progress.get() * 1.0 / fileLength) * 100);
     }
 
+    /**
+     * 返回任务状态信息
+     *
+     * @param duration 更新频率
+     * @return 状态信息
+     */
     public Map<String, String> getStatusMap(float duration) {
         //计算下载速度
         long currentLength = progress.get();
@@ -66,10 +80,6 @@ public class HttpDownloadTask {
         //总共下载大小
         statusMap.put("totalSize", StorageUnit.convertTo(fileLength));
         return statusMap;
-    }
-
-    public DownloadStatus getStatus() {
-        return status;
     }
 
     public void stop() {
@@ -89,6 +99,11 @@ public class HttpDownloadTask {
         }
     }
 
+    /**
+     * 初始化下载连接
+     * 判断是否支持多线程， 并开启下载任务
+     * @throws RuntimeException 程序异常（包括描述）
+     */
     public void resolve() throws RuntimeException {
         status = DownloadStatus.INIT;
         String filename = urlStr.substring(urlStr.lastIndexOf("/") + 1);
@@ -119,7 +134,7 @@ public class HttpDownloadTask {
             File file = new File(filePrefixDir, filename);
             File tempFile = new File(filePrefixDir, tempFilename);
 
-            if (file.exists() && file.length() == fileLength) {
+            if (file.exists() && !tempFile.exists() && file.length() == fileLength) {
                 System.out.println("文件已存在");
                 throw new RuntimeException("文件已存在");
             }
@@ -146,12 +161,7 @@ public class HttpDownloadTask {
             } else {
                 directDownload(file);
             }
-            if (status == DownloadStatus.DOWNLOADING) {
-                System.out.println("下载完成");
-                status = DownloadStatus.FINISHED;
-            } else {
-                System.out.println("下载被暂停");
-            }
+            status = DownloadStatus.FINISHED;
 
         } catch (MalformedURLException e) {
             throw new RuntimeException("URL 解析失败");
@@ -168,6 +178,12 @@ public class HttpDownloadTask {
         }
     }
 
+    /**
+     * 检测多点续传文件，并设置下载区间
+     *
+     * @param tempFile 临时文件
+     * @throws IOException IO异常
+     */
     private void setBreakPoint(File tempFile) throws IOException {
         if (tempFile.exists()) {
             //检测到临时文件，开始断点续传
@@ -199,6 +215,12 @@ public class HttpDownloadTask {
         }
     }
 
+    /**
+     * 直接下载（单线程）
+     *
+     * @param file 下载文件
+     * @throws IOException io异常
+     */
     private void directDownload(File file) throws IOException {
         HttpURLConnection conn = null;
         try {

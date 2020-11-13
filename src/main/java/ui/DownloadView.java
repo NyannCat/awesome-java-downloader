@@ -69,9 +69,9 @@ public class DownloadView extends JFrame {
             new Thread(() -> {
                 while (instance.getProgressPercentage() < 100) {
                     try {
-                        TimeUnit.MILLISECONDS.sleep(600);
+                        TimeUnit.MILLISECONDS.sleep(300);
                         int percentage = instance.getProgressPercentage();
-                        Map<String, String> statusMap = instance.getStatusMap(0.6f);
+                        Map<String, String> statusMap = instance.getStatusMap(0.3f);
                         progressBar1.setValue(percentage);
                         progressBar1.setString(String.format("[%d%%] %s/%s", percentage, statusMap.get("currentSize"), statusMap.get("totalSize")));
                         textField4.setText(statusMap.get("speed") + "/s" + " ,[" + instance.getStatus().description + "]" + ", ETA:" + statusMap.get("time"));
@@ -79,10 +79,7 @@ public class DownloadView extends JFrame {
                         e1.printStackTrace();
                     }
                 }
-                textField4.setText(String.format("[%s]", instance.getStatus().description));
-                if (instance.getStatus() == DownloadStatus.FINISHED) {
-                    JOptionPane.showMessageDialog(dialogPane, "下载完成", "提示", JOptionPane.INFORMATION_MESSAGE);
-                }
+                JOptionPane.showMessageDialog(dialogPane,instance.getStatus().description, "提示", JOptionPane.INFORMATION_MESSAGE);
                 button3.setEnabled(false);
                 button4.setEnabled(true);
             }).start();
