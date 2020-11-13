@@ -1,0 +1,98 @@
+JFDML JFormDesigner: "7.0.2.6.321" Java: "11.0.8" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"title": "[Lazyzzz] 网络资源下载器"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "dialogPane"
+				"border": new javax.swing.border.EmptyBorder( 12, 12, 12, 12 )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+					"$horizontalGroup": "par l {seq {space :p:16:p, par t {comp label1:::p:64:p, comp label2:::p:64:p, comp label3::t:p:64:p, comp label4::t:p:64:p}, space s:::p, par l {seq l {par l {comp checkBox1::l:p::p, comp textField2::l:p:236:p, comp textField1::l:p:236:p}, space :p:12:p, par l {seq l {comp button2:::p:55:p, space ::8:x, comp button5:::p:55:p}, comp button3::l:::x, comp button1::l:::x}}, seq l {comp progressBar1:::p:236:p, space u:::p, comp button4:::::x}}}, seq t {space :::p, comp textField4::::458:x}}"
+					"$verticalGroup": "par l {seq l {space :p:26:p, par b {comp label1::b:p::p, comp textField1::b:p::p, comp button1::b:p::p}, space s:::p, par l {par b {comp textField2::b:p::p, comp button2::b:p::p, comp button5::b:p::p}, comp label2::l:p::p}, par l {seq {space :::x, par b {comp label3::b:p::p, comp checkBox1::b:p::p}, space :p:8:p}, seq l {space u:::p, comp button3:::p::p, space :::x}}, par b {comp progressBar1::b:p:23:p, comp label4::b:p::p, comp button4::b:p::p}, space :::p, comp textField4:::p:24:p, space :::p}}"
+				} ) {
+					name: "contentPanel"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label1"
+						"text": "下载地址"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "textField1"
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label2"
+						"text": "保存路径"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "textField2"
+						"editable": false
+						auxiliary() {
+							"JavaCodeGenerator.preInitCode": "textField2.setText(System.getProperty(\"user.home\") + \"\\\\Downloads\");"
+						}
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "button2"
+						"text": "选择"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 10 )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "button2MouseClicked", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label3"
+						"text": "下载设置"
+					} )
+					add( new FormComponent( "javax.swing.JProgressBar" ) {
+						name: "progressBar1"
+						"stringPainted": true
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "button3"
+						"text": "暂停"
+						"enabled": false
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "button3MouseClicked", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label4"
+						"text": "下载进度"
+					} )
+					add( new FormComponent( "javax.swing.JCheckBox" ) {
+						name: "checkBox1"
+						"text": "开启多线程"
+						"selected": true
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "button1"
+						"text": "验证连接"
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "button1MouseClicked", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "textField4"
+						"text": "暂无下载信息"
+						"horizontalAlignment": 0
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 12 )
+						"editable": false
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "button4"
+						"text": "开始"
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "button4MouseClicked", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "button5"
+						"text": "打开"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 10 )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "button5MouseClicked", true ) )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 490, 270 )
+		} )
+	}
+}
